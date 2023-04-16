@@ -46,14 +46,10 @@ defmodule Mix.Tasks.Git.Test do
     IO.puts([IO.ANSI.light_green(), "* ", text, IO.ANSI.reset()])
   end
 
-  if Mix.env() == :test do
-    defp create_tmpdir do
-      {:ok, _started} = Application.ensure_all_started(:briefly)
-      {:ok, tmpdir} = Briefly.create(directory: true)
-      tmpdir
-    end
-  else
-    defp create_tmpdir, do: raise("not implemented")
+  defp create_tmpdir do
+    {:ok, _started} = Application.ensure_all_started(:briefly)
+    {:ok, tmpdir} = Briefly.create(directory: true)
+    tmpdir
   end
 
   defp symlink(item, from, to) do
