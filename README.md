@@ -16,6 +16,10 @@ To keep this quick, we take one major shortcut — the cloned tree's dependencie
 
 That said, you're still looking at however long it takes to do a full compile and run your test suite.  If you've got a massive project that takes several minutes to compile and test, you'll probably want to give this library a pass!
 
+## Demo
+
+![Screenshot](https://github.com/wisq/ex_git_test/blob/images/images/screenshot.png?raw=true)
+
 ## Setup
 
 First, add `ex_git_test` to your list of dependencies in `mix.exs`:
@@ -32,4 +36,6 @@ The `:only` and `:runtime` options are optional, but you only need ExGitTest in 
 
 Now fetch your dependencies with `mix deps.get`, and then test things with `MIX_ENV=test mix git.test`.  Hopefully everything passes.  (If it has issues with the state of your tree, try committing your existing changes first.)
 
-Next, set up your pre-commit hook.  See the [hooks/pre-commit](hooks/pre-commit) file for an example, or just copy it from `deps/ex_git_test/hooks/pre-commit`.  However you choose to customise your hooks, the most important thing is just to make sure you run it in `MIX_ENV=test` (it won't run otherwise), and to make sure that it passes up its exit value (hence the `exec`).
+Next, set up your pre-commit hook.  See the [hooks/pre-commit](hooks/pre-commit) file for an example, or just copy it from `deps/ex_git_test/hooks/pre-commit`.  (If you're feeling lazy/adventurous, you can just symlink the latter file directly into your `.git/hooks` directory.)
+
+However you choose to customise your hooks, the most important thing is just to make sure you run it in `MIX_ENV=test` (it won't run otherwise), and to make sure that it passes up its exit value (hence the `exec`).
