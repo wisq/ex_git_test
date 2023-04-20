@@ -3,13 +3,13 @@ defmodule Mix.Tasks.Git.Test do
 
   @moduledoc false
 
-  def run([]), do: git_test(Mix.env())
+  def run([]), do: git_test()
 
   def run(_) do
     Mix.raise("git.test does not accept arguments")
   end
 
-  def git_test(:test) do
+  defp git_test do
     cwd = File.cwd!()
     tmpdir = create_tmpdir()
 
@@ -32,14 +32,13 @@ defmodule Mix.Tasks.Git.Test do
 
     status("Running tests ...")
 
-    System.cmd("mix", ["test", "--color"], cd: tree, into: IO.stream(:stdio, :line))
+    System.cmd("sh", ["-c", "exec 2>&1; MIX_ENV=test exec mix test --color"],
+      cd: tree,
+      into: IO.stream(:stdio, :line)
+    )
     |> check_cmd_result("mix test")
 
     status("All tests passed.")
-  end
-
-  def git_test(_) do
-    Mix.raise("Must be run with MIX_ENV=test")
   end
 
   defp status(text) do
