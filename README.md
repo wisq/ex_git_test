@@ -34,8 +34,8 @@ end
 
 The `:only` and `:runtime` options are optional, but you only need ExGitTest in your `test` environment anyway, and it will start its own runtime dependencies as needed.
 
-Now fetch your dependencies with `mix deps.get`, and then test things with `MIX_ENV=test mix git.test`.  Hopefully everything passes.  (If it has issues with the state of your tree, try committing your existing changes first.)
+Now fetch your dependencies with `mix deps.get`, and then test things with `mix git.test`.  Hopefully everything passes.  (If it has issues with the state of your tree, try committing your existing changes first.)
 
-Next, set up your pre-commit hook.  See the [hooks/pre-commit](hooks/pre-commit) file for an example, or just copy it from `deps/ex_git_test/hooks/pre-commit`.  (If you're feeling lazy/adventurous, you can just symlink the latter file directly into your `.git/hooks` directory.)
+Next, run `mix git.test.install`.  This will create an executable `.git/hooks/pre-commit` file that runs `mix git.test` for you.  (This will **not** overwrite an existing pre-commit hook.  You can either move your existing hook out of the way, or just integrate `mix git.test` into your existing one.)
 
-However you choose to customise your hooks, the most important thing is just to make sure you run it in `MIX_ENV=test` (it won't run otherwise), and to make sure that it passes up its exit value (hence the `exec`).
+Feel free to customise your new hook however you want.  The most important thing is just to ensure that if `mix git.test` fails, then the hook exits with a non-zero status.  The default script uses `exec` for this, but you could also do e.g. `mix git.test || exit 1` (or the equivalent in whatever language your hook is written in).
