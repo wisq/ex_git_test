@@ -1,8 +1,26 @@
 defmodule Mix.Tasks.Git.Test.Install do
+  @pre_commit_contents """
+  #!/bin/sh
+  exec mix git.test
+  """
+
+  @shortdoc "Installs a git pre-commit hook that runs `mix git.test`"
+  @moduledoc """
+  Installs a git pre-commit hook to ensure `mix git.test` passes before allowing a commit.
+
+  The actual contents of the hook are incredibly simple:
+
+  ```sh
+  #{@pre_commit_contents}
+  ```
+
+  The hook will be installed as `.git/hooks/pre-commit`.  If that file already
+  exists, it will **not** be overwritten; instead, this task will report
+  whether the existing hook appears to contain `mix git.test` or not.
+  """
+
   use Mix.Task
   import Bitwise
-
-  @moduledoc false
 
   def run([]) do
     File.cwd!()
@@ -16,7 +34,7 @@ defmodule Mix.Tasks.Git.Test.Install do
   def git_test_install(cwd) do
     path = get_hooks_path(cwd)
 
-    install(path, "pre-commit", pre_commit_contents())
+    install(path, "pre-commit", @pre_commit_contents)
   end
 
   defp get_hooks_path(cwd) do
@@ -74,7 +92,7 @@ defmodule Mix.Tasks.Git.Test.Install do
 
   defp check_contents(path, expected) do
     contents = File.read!(path)
- 
+
     cond do
       contents == expected ->
         make_executable(path)
@@ -93,13 +111,5 @@ defmodule Mix.Tasks.Git.Test.Install do
         puts(:light_red, "* File exists: #{path}")
         puts(:light_red, "* The existing hook does not appear to run `mix git.test`.")
     end
-  end
- 
-  defp pre_commit_contents do
-    """
-    #!/bin/sh
-
-    exec mix git.test
-    """
   end
 end

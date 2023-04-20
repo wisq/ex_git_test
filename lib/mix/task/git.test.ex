@@ -1,7 +1,35 @@
 defmodule Mix.Tasks.Git.Test do
-  use Mix.Task
+  @shortdoc "Run `mix test` using current git staged changes"
+  @moduledoc """
+  Runs `mix test` on the latest git commit, plus any staged changes.
 
-  @moduledoc false
+  Performs the following steps:
+
+    1. Creates a temporary directory (in the standard system location).
+
+    2. Runs `git diff --cached` (in the local tree) to extract staged changes.
+
+    3. Clones the local tree into the temporary directory.
+
+    4. Applies the changes extracted in step 2.
+
+    5. Symlinks dependencies from the local `deps` to the cloned `deps`.
+      * This avoids needing to recompile dependencies, which aren't part of the check-in anyway.
+
+    6. Runs `mix test`, capturing the output (both stdout and stderr).
+      * If it passes, great!
+      * If it fails, dumps the captured output and exits with a non-zero status.
+
+    7. Cleans up the temporary directory on exit.
+
+  This is intended to be used as part of a pre-commit hook, to help protect
+  against forgetting to add new files, doing partial commits where some
+  committed changes depend on changes not staged for commit, etc.
+
+  See the `git.test.install` task for details on installing the hook.
+  """
+
+  use Mix.Task
 
   def run([]), do: git_test()
 
