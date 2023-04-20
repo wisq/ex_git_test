@@ -27,7 +27,7 @@ First, add `ex_git_test` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ex_git_test, github: "wisq/ex_git_test", tag: "main", only: :test, runtime: false}
+    {:ex_git_test, github: "wisq/ex_git_test", tag: "main", only: :dev, runtime: false}
   ]
 end
 ```
