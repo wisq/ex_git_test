@@ -29,7 +29,7 @@ First, add `ex_git_test` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ex_git_test, "~> 0.1.0", only: :dev, runtime: false}
+    {:ex_git_test, "~> 0.1.0", only: [:dev, :test], runtime: false}
   ]
 end
 ```

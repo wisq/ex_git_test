@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Git.Test.Install do
   @pre_commit_contents """
   #!/bin/sh
-  exec mix git.test
+  MIX_ENV=test exec mix git.test
   """
 
   @shortdoc "Installs a git pre-commit hook that runs `mix git.test`"

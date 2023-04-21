@@ -13,7 +13,7 @@ defmodule Mix.Tasks.Git.Test do
 
     4. Applies the changes extracted in step 2.
 
-    5. Symlinks dependencies from the local `deps` to the cloned `deps`.
+    5. Symlinks dependencies build directories from the local tree to cloned tree.
       * This avoids needing to recompile dependencies, which aren't part of the check-in anyway.
 
     6. Runs `mix test`, capturing the output (both stdout and stderr).
@@ -25,6 +25,12 @@ defmodule Mix.Tasks.Git.Test do
   This is intended to be used as part of a pre-commit hook, to help protect
   against forgetting to add new files, doing partial commits where some
   committed changes depend on changes not staged for commit, etc.
+
+  This task **must** be run in the `test` environment, i.e. with
+  `MIX_ENV=test`.  In order to perform step 5, it needs an accurate list of
+  dependency build directories for the environment it will be testing in.
+  (Also, running the task itself in the `test` environment ensures that all
+  dependencies will have been built beforehand.)
 
   Use `mix git.test.install` to install the default pre-commit hook.
   """
@@ -40,6 +46,7 @@ defmodule Mix.Tasks.Git.Test do
 
   @doc false
   def git_test do
+    ensure_test_env()
     cwd = File.cwd!()
     tmpdir = create_tmpdir()
 
@@ -123,5 +130,18 @@ defmodule Mix.Tasks.Git.Test do
     ])
 
     Mix.raise("Command #{inspect(cmd)} exited with status #{code}")
+  end
+
+  defp ensure_test_env() do
+    case Mix.env() do
+      :test ->
+        :ok
+
+      env ->
+        Mix.raise(
+          "Must be run in the `test` env (not `#{env}`).  " <>
+            "Dependency caching will not work otherwise."
+        )
+    end
   end
 end
