@@ -33,7 +33,13 @@ defmodule ExGitTest.MixProject do
 
   defp package do
     [
-      files: ["lib", "mix.exs", "README.md", "LICENSE"],
+      files: [
+        "lib",
+        "mix.exs",
+        "README.md",
+        "CHANGELOG.md",
+        "LICENSE"
+      ],
       maintainers: ["Adrian Irving-Beer"],
       licenses: ["MIT"],
       links: %{GitHub: @github_url}
@@ -43,7 +49,10 @@ defmodule ExGitTest.MixProject do
   defp docs do
     [
       main: "readme",
-      extras: ["README.md"]
+      extras: [
+        "README.md",
+        "CHANGELOG.md"
+      ]
     ]
   end
 
