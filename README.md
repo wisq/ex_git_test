@@ -34,7 +34,7 @@ def deps do
 end
 ```
 
-Now fetch your dependencies with `mix deps.get`, and then test things with `mix git.test`.  Hopefully everything passes.  (If it has issues with the state of your tree, try committing your existing changes first.)
+Now fetch your dependencies with `mix deps.get`, and then test things with `MIX_ENV=test mix git.test`.  Hopefully everything passes.  (If it has issues with the state of your tree, try committing your existing changes first.)
 
 Next, run `mix git.test.install`.  This will create an executable `.git/hooks/pre-commit` file that runs `mix git.test` for you.  (This will **not** overwrite an existing pre-commit hook.  You can either move your existing hook out of the way, or just integrate `mix git.test` into your existing one.)
 
