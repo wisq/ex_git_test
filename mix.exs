@@ -7,7 +7,7 @@ defmodule ExGitTest.MixProject do
     [
       app: :ex_git_test,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
