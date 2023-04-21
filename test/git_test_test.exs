@@ -40,7 +40,7 @@ defmodule ExGitTest.Test do
       System.put_env(@env_var, @env_value)
       Enum.each(env, fn {k, v} -> System.put_env("#{k}", "#{v}") end)
 
-      capture_io(fn -> Mix.Tasks.Git.Test.run([]) end)
+      capture_io(fn -> Mix.Tasks.Git.Test.git_test() end)
     after
       System.delete_env(@env_var)
       Enum.each(env, fn {k, _} -> System.delete_env("#{k}") end)

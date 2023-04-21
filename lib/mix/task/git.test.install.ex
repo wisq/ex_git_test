@@ -22,7 +22,8 @@ defmodule Mix.Tasks.Git.Test.Install do
   use Mix.Task
   import Bitwise
 
-  def run([]) do
+  @doc false
+  def run([] = _args) do
     File.cwd!()
     |> git_test_install()
   end
@@ -31,6 +32,7 @@ defmodule Mix.Tasks.Git.Test.Install do
     Mix.raise("git.test.install does not accept arguments")
   end
 
+  @doc false
   def git_test_install(cwd) do
     path = get_hooks_path(cwd)
 

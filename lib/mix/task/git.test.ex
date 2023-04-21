@@ -26,18 +26,20 @@ defmodule Mix.Tasks.Git.Test do
   against forgetting to add new files, doing partial commits where some
   committed changes depend on changes not staged for commit, etc.
 
-  See the `git.test.install` task for details on installing the hook.
+  Use `mix git.test.install` to install the default pre-commit hook.
   """
 
   use Mix.Task
 
+  @doc false
   def run([]), do: git_test()
 
   def run(_) do
     Mix.raise("git.test does not accept arguments")
   end
 
-  defp git_test do
+  @doc false
+  def git_test do
     cwd = File.cwd!()
     tmpdir = create_tmpdir()
 
